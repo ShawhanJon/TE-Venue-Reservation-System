@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-
 import com.techelevator.projects.model.Department;
 import com.techelevator.projects.model.DepartmentDAO;
 
@@ -39,8 +38,6 @@ public class JDBCDepartmentDAO implements DepartmentDAO {
 	}
 				
 	
-	
-		
 	@Override
 	public List<Department> searchDepartmentsByName(String nameSearch) {
 		
