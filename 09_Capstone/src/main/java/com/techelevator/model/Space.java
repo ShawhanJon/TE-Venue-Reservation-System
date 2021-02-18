@@ -1,6 +1,6 @@
-package com.techelevator.view;
+package com.techelevator.model;
 
-public class UI {
+public class Space {
 	
 	// RENAME, REUSE, OR DELETE ME... THIS IS A PLACEHOLDER ONLY
 
