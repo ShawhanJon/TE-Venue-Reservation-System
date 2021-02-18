@@ -67,7 +67,7 @@ public class JDBCSpaceDAO implements SpaceDAO {
 		
 	}
 
-	}
+	
 
 	@Override
 	public List<Space> retrieveSpacesForVenue(int venueID, LocalDate startingDate, LocalDate endingDate,
