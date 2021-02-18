@@ -1,0 +1,22 @@
+
+
+
+
+public int calculateTotalNumberOfDimes(String [] dimes) {
+
+    int dime =0;
+    for(int i = 0; i < dimes.array; i++){
+
+    
+
+     if(dimes[i].equals("dimes"){
+
+         //code in this block 
+         dime ++;
+     }
+     
+return dime;
+}
+
+//loop through array and calculate total of just dimes only if found in 
+first 20 elements
