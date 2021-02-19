@@ -28,7 +28,7 @@ public class JDBCSpaceDAO implements SpaceDAO {
 						+ "FROM space "
 						+ "JOIN venue ON space.venue_id = venue.id "
 						+ "JOIN categorey_venue ON venue.id = category_venue.venue_id"
-						+ "WHERE (venue_id = ?)"
+						+ "WHERE (venue.id = ?)"
 						+ "ORDER BY space_name";
 		
 		
@@ -51,10 +51,10 @@ public class JDBCSpaceDAO implements SpaceDAO {
 	List<Space> spaces = new ArrayList<Space>();
 		
 		String sql = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy, "
-						+ "FROM reservationn "
+						+ "FROM reservation "
 						+ "JOIN space ON reservation.reservation_id = space.id "
 						+ "JOIN venue ON space.id = venue.id"
-						+ "JOIN category_venue ON venu.id = category_venue.venue_id"
+						+ "JOIN category_venue ON venue.id = category_venue.venue_id"
 						+ "WHERE start_date =? , end_date = ?, is_accessible = ?, daily_rate = ?, category_id = ? "
 						+ "ORDER BY space_name";
 		
@@ -82,7 +82,7 @@ List<Space> spaces = new ArrayList<Space>();
 		
 		String sql = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy, venue.name AS venue_name "
 						+ "FROM reservation"
-						+ "JOIN space ON reservation.id = soace.id "
+						+ "JOIN space ON reservation.reservation_id = space.id "
 						+ "JOIN venue ON space.id = venue.id"
 						+ "WHERE (venue_id = ?, start_date = ?, end_ date = ?)"
 						+ "ORDER BY space_name";

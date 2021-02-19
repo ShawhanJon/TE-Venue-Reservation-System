@@ -27,7 +27,7 @@ public class JDBCVenueDAO implements VenueDAO {
 		List<Venue> venues = new ArrayList<Venue>();
 		
 		String sql = "SELECT venue.id AS venue_id, venue.name AS venue_name, city.name AS city_name, "
-						+ "state.name AS state_name, venue.discription AS venue_description "
+						+ "state.name AS state_name, venue.description AS venue_description "
 						+ "FROM venue "
 						+ "JOIN city ON venue.city_id = city.id "
 						+ "JOIN state ON city.state_abbreviation = state.abbreviation "
