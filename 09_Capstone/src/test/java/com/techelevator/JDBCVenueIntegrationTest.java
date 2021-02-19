@@ -3,8 +3,9 @@ package com.techelevator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.techelevator.model.Venue;
@@ -20,21 +21,21 @@ import java.util.List;
 
 public class JDBCVenueIntegrationTest extends DAOIntegrationTest{
 	
-	private static SingleConnectionDataSource dataSource;
+
 	private JDBCVenueDAO dao;
 	private JdbcTemplate jdbcTemplate;
 	
 	
 	@Before
 	public void setup() {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		
-		dao = new JDBCVenueDAO(dataSource);
-	
-	}
+			dao = new JDBCVenueDAO(getDataSource());
+			jdbcTemplate = new JdbcTemplate(getDataSource());
+		}
 
-		@Test
-		public void test_get_all_venues() {
+	@Test
+	public void test_get_all_venues() {
+		
 		String sql = "SELECT COUNT(*) AS numberOfRows FROM venue";
 		SqlRowSet rows = jdbcTemplate.queryForRowSet(sql);
 		rows.next();
@@ -49,7 +50,7 @@ public class JDBCVenueIntegrationTest extends DAOIntegrationTest{
 		List<Venue> venuesReturned = dao.getAllVenues();
 		
 		Assert.assertNotNull(venuesReturned);
-		Assert.assertEquals(originalRowCount + 2, venuesReturned.size());
+		Assert.assertEquals(originalRowCount + 1, venuesReturned.size());
 	}
 	
 
