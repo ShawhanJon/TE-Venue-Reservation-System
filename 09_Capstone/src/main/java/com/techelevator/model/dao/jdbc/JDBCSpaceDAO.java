@@ -27,7 +27,7 @@ public class JDBCSpaceDAO implements SpaceDAO {
 		String sql = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy, venue.name AS venue_name "
 						+ "FROM space "
 						+ "JOIN venue ON space.venue_id = venue.id "
-						+ "JOIN categorey_venue ON venue.id = category_venue.venue_id"
+						+ "JOIN category_venue ON venue.id = category_venue.venue_id"
 						+ "WHERE (venue.id = ?)"
 						+ "ORDER BY space_name";
 		
@@ -45,30 +45,34 @@ public class JDBCSpaceDAO implements SpaceDAO {
 	}
 
 	@Override
-	public List<Space> retrieveAvailableSpaces(LocalDate startingDate, LocalDate endingDate, int expectedAttendance,
+	public List<Space> retrieveAvailableSpaces(int venueID, LocalDate startingDate, LocalDate endingDate, int expectedAttendance,
 			boolean isAccessible, double dailyRate, int category) {
 	
-	List<Space> spaces = new ArrayList<Space>();
+	List<Space> spaceRequest = new ArrayList<Space>();
 		
-		String sql = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy, "
-						+ "FROM reservation "
-						+ "JOIN space ON reservation.reservation_id = space.id "
-						+ "JOIN venue ON space.id = venue.id"
-						+ "JOIN category_venue ON venue.id = category_venue.venue_id"
-						+ "WHERE start_date =? , end_date = ?, is_accessible = ?, daily_rate = ?, category_id = ? "
-						+ "ORDER BY space_name";
-		
-		
-		SqlRowSet spaceResults = jdbcTemplate.queryForRowSet(sql, startingDate, endingDate, expectedAttendance, isAccessible, category);
-		
-		//loop through the results
-		while(spaceResults.next()) {
-			Space space = mapRowToSpace(spaceResults);
-			spaces.add(space);
-		}
-		
-		return spaces;
-		
+	String sqlRetrieveAvailableSpaces = "SELECT space.id, space.venue_id, space.name, space.is_accessible, space.open_from, space.open_to, CAST(space.daily_rate AS decimal), space.max_occupancy FROM space " +
+            "JOIN venue ON venue.id = space.venue_id " +
+            "WHERE venue_id = ? " +
+            "AND max_occupancy >= ? " +
+            "AND NOT EXISTS (SELECT * FROM reservation " +
+            "WHERE (CAST(? AS DATE) BETWEEN reservation.start_date AND reservation.end_date " +
+            "OR CAST(? AS DATE) BETWEEN reservation.start_date AND reservation.end_date) " +
+            "AND reservation.space_id = space.id) " +
+            "AND ((EXTRACT(MONTH from CAST(? AS DATE)) BETWEEN space.open_from AND space.open_to) OR space.open_from IS NULL AND space.open_to IS NULL) " +
+            "AND ((EXTRACT(MONTH from CAST(? AS DATE)) BETWEEN space.open_from AND space.open_to) OR space.open_from IS NULL AND space.open_to IS NULL) " +
+            "GROUP BY space.id " +
+            "ORDER BY space.daily_rate ASC " +
+            "LIMIT 5";
+    SqlRowSet spaceResults = jdbcTemplate.queryForRowSet(sqlRetrieveAvailableSpaces, venueID, expectedAttendance, startingDate, endingDate, startingDate, endingDate);
+	
+    while(spaceResults.next()) {
+		Space space = mapRowToSpace(spaceResults);
+		spaceRequest.add(space);
+    }
+    
+    return spaceRequest;
+    
+    
 	}
 
 	

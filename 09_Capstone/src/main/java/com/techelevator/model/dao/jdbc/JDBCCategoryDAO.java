@@ -29,7 +29,7 @@ public class JDBCCategoryDAO implements CategoryDAO{
 		
 		String sql = "SELECT category.name AS category_name,"
 					+"FROM category "
-					+"JOIN category_venue ON category.id = category.venue.category.id"
+					+"JOIN category_venue ON category.id = category_venue.category_id"
 					+"WHERE venue_id = ?";
 					
 					SqlRowSet results = jdbcTemplate.queryForRowSet(sql, venueID);
@@ -48,7 +48,7 @@ public class JDBCCategoryDAO implements CategoryDAO{
 		
 		String sql = "SELECT category.name AS category_name,"
 					+"FROM category "
-					+"ORDER category_name";
+					+"ORDER BY category_name";
 					
 					
 	SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
