@@ -24,10 +24,11 @@ public class JDBCSpaceDAO implements SpaceDAO {
 		
 		List<Space> spaces = new ArrayList<Space>();
 		
-		String sql = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy, "
+		String sql = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy, venue.name AS venue_name "
 						+ "FROM space "
 						+ "JOIN venue ON space.venue_id = venue.id "
-						+ "WHERE ="
+						+ "FULL JOIN categorey_venue ON venue.id = category_venue.venue_id"
+						+ "WHERE (is_accessible = true OR is_accessible = ?)"
 						+ "ORDER BY space_name";
 		
 		
