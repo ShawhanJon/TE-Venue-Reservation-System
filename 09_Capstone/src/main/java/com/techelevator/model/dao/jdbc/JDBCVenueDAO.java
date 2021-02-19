@@ -71,4 +71,32 @@ public class JDBCVenueDAO implements VenueDAO {
 
 		return venue;
 	}
+	
+	
+	
+		public void save(Venue venue) {
+		String insertSql = "INSERT INTO venue (id, name, city_id, description) VALUES (DEFAULT, ?, ?, ?) RETURNING id";
+		SqlRowSet rows = jdbcTemplate.queryForRowSet(insertSql, venue.getName(), venue.getCity_id(), venue.getDescription() );
+		rows.next();
+		int id = rows.getInt("id");
+		venue.setId(id);
+		}
+		
+		
+		
+		
+		/*
+	 * String sqlInsertVenue = "INSERT INTO venue(id, name, city_id, description " +
+	 * "VALUES(?, ?, ?, ?)"; newVenue.setId(getNextVenueId());
+	 * jdbcTemplate.update(sqlInsertVenue, newVenue.getId(), newVenue.getName(),
+	 * newVenue.getCity_id(), newVenue.getDescription()); }
+	 */
+	
+/*
+ * private int getNextVenueId() { SqlRowSet nextIdResult =
+ * jdbcTemplate.queryForRowSet("SELECT nextval('venue_id_seq')");
+ * if(nextIdResult.next()) { return nextIdResult.getInt(1); } else { throw new
+ * RuntimeException("Something went wrong while getting an id for the new venue"
+ * ); } } }
+ */
 }

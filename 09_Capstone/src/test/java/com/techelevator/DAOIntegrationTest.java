@@ -18,6 +18,7 @@ public abstract class DAOIntegrationTest {
 	 */
 	private static SingleConnectionDataSource dataSource;
 
+
 	/*
 	 * Before any tests are run, this method initializes the datasource for testing.
 	 */
