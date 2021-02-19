@@ -4,39 +4,27 @@ import java.time.LocalDate;
 
 public class Reservation {
 	
-	private int id;
-	private String venue;
-	private String Space;
-	private double totalCost;
+	private int reservationId;
+	private int spaceID;
 	private int numberOfAttendees;
 	private LocalDate startingDate;
 	private LocalDate endingDate;
 	private String reservedFor;
+	private String venueName;
+	private String spaceName;
+	private double dailyRate;
 	
-	
-	public int getId() {
-		return id;
+	public int getReservationId() {
+		return reservationId;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setReservationId(int reservationId) {
+		this.reservationId = reservationId;
 	}
-	public String getVenue() {
-		return venue;
+	public int getSpaceID() {
+		return spaceID;
 	}
-	public void setVenue(String venue) {
-		this.venue = venue;
-	}
-	public String getSpace() {
-		return Space;
-	}
-	public void setSpace(String space) {
-		Space = space;
-	}
-	public double getTotalCost() {
-		return totalCost;
-	}
-	public void setTotalCost(double totalCost) {
-		this.totalCost = totalCost;
+	public void setSpaceID(int spaceID) {
+		this.spaceID = spaceID;
 	}
 	public int getNumberOfAttendees() {
 		return numberOfAttendees;
@@ -62,6 +50,26 @@ public class Reservation {
 	public void setReservedFor(String reservedFor) {
 		this.reservedFor = reservedFor;
 	}
+	public String getVenueName() {
+		return venueName;
+	}
+	public void setVenueName(String venueName) {
+		this.venueName = venueName;
+	}
+	public String getSpaceName() {
+		return spaceName;
+	}
+	public void setSpaceName(String spaceName) {
+		this.spaceName = spaceName;
+	}
+	public double getDailyRate() {
+		return dailyRate;
+	}
+	public void setDailyRate(double dailyRate) {
+		this.dailyRate = dailyRate;
+	}
+	
+	
 	
 	
 	

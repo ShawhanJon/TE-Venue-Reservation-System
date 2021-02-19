@@ -1,16 +1,15 @@
 package com.techelevator.model;
 
-import java.util.List;
 
 public class Venue {
 	
 	private int id;
 	private String name;
-	private String cityName;
-	private String stateName;
-	private List<String> categories;
+	private int city_id;
+	private String city_name;
+	private String state_abbreviation;
 	private String description;
-	private List<Space> spaces;
+	private String category_name;
 	
 	
 	public int getId() {
@@ -25,23 +24,23 @@ public class Venue {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getCityName() {
-		return cityName;
+	public int getCity_id() {
+		return city_id;
 	}
-	public void setCityName(String cityName) {
-		this.cityName = cityName;
+	public void setCity_id(int city_id) {
+		this.city_id = city_id;
 	}
-	public String getStateName() {
-		return stateName;
+	public String getCity_name() {
+		return city_name;
 	}
-	public void setStateName(String stateName) {
-		this.stateName = stateName;
+	public void setCity_name(String city_name) {
+		this.city_name = city_name;
 	}
-	public List<String> getCategories() {
-		return categories;
+	public String getState_abbreviation() {
+		return state_abbreviation;
 	}
-	public void setCategories(List<String> categories) {
-		this.categories = categories;
+	public void setState_abbreviation(String state_abbreviation) {
+		this.state_abbreviation = state_abbreviation;
 	}
 	public String getDescription() {
 		return description;
@@ -49,12 +48,14 @@ public class Venue {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public List<Space> getSpaces() {
-		return spaces;
+	public String getCategory_name() {
+		return category_name;
 	}
-	public void setSpaces(List<Space> spaces) {
-		this.spaces = spaces;
+	public void setCategory_name(String category_name) {
+		this.category_name = category_name;
 	}
+	
+	
 	
 	
 

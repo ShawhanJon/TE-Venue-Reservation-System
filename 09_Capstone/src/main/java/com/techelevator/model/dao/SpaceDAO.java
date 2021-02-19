@@ -7,12 +7,9 @@ import com.techelevator.model.*;
 
 public interface SpaceDAO {
 	
-	public List<Space> retrieveSpacesByVenueID(int venueID);
-	
-	public List<Space> retrieveAvailableSpaces(int venueID, LocalDate startingDate, LocalDate endingDate, int expectedAttendance,
-			boolean isAccessible, double dailyRate, int category);
-	
-	public List<Space> retrieveSpacesForVenue(int venueID, LocalDate startingDate, LocalDate endingDate, int expectedAttendance);
-	
+	public List<Space> retrieveSpacesByVenueID(int id);
+
+	public List<Space> retrieveAvailableSpaces(LocalDate startingDate, int numberOfDays, int expectedAttendance, int venueID);
 
 }
+

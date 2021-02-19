@@ -1,10 +1,5 @@
 package com.techelevator.model.dao.jdbc;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,63 +17,53 @@ public class JDBCReservationDAO implements ReservationDAO{
 	}
 
 	@Override
-	public Reservation addReservation(int spaceID, int expectedAttendance, LocalDate startingDate, LocalDate endingDate,
-			String reservedFor) {
+	public Reservation addReservation(Reservation reservation) {
 		String sql = "INSERT INTO reservation (reservation_id, space_id, number_of_attendees, start_date, end_date, "
 				+ "reserved_for) VALUES (DEFAULT, ?, ?, ?, ?, ?) RETURNING reservation_id";
-
-		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, spaceID, expectedAttendance, startingDate, endingDate, reservedFor);
+		
+		SqlRowSet row = jdbcTemplate.queryForRowSet(sql, reservation.getSpaceID(), reservation.getNumberOfAttendees(), reservation.getStartingDate(), reservation.getEndingDate(), reservation.getReservedFor());
 		row.next();
 		int reservationId = row.getInt("reservation_id");
 
-		sql = "SELECT reservation_id, space.name AS space_name, venue.name AS venue_name, "
-				+ "space.daily_rate AS daily_rate, number_of_attendees, start_date, end_date, reserved_for "
-				+ "FROM reservation JOIN space ON reservation.space_id = space.id "
-				+ "JOIN venue ON space.venue_id = venue.id WHERE reservation_id = ?";
-
-		SqlRowSet reservationResults = jdbcTemplate.queryForRowSet(sql, reservationId);
-		reservationResults.next();
-		Reservation reservation = mapRowToReservation(reservationResults);
+		reservation.setReservationId(reservationId);
 		return reservation;
 		
 	}
 
 	@Override
-	public List<Reservation> retrieveUpcomingReservations(int venueId) {
+	public Reservation getReservationById(int id) {
+		String selectSql = "SELECT reservation.reservation_id AS reservation_id, reservation.space_id AS space_id, reservation.number_of_attendees AS number_of_attendees, reservation.start_date AS start_date, reservation.end_date AS end_date, reservation.reserved_for AS reserved_for, venue.name AS venue_name, space.name AS space_name, CAST (space.daily_rate AS numeric) AS daily_rate"
+				+ " FROM reservation" + " JOIN space ON reservation.space_id = space.id"
+				+ " JOIN venue ON space.venue_id = venue.id" + " WHERE reservation_id = ?";
 
-		List<Reservation> reservation = new LinkedList<Reservation>();
+		SqlRowSet rows = jdbcTemplate.queryForRowSet(selectSql, id);
 
-		String sql = "SELECT reservation_id, space.name AS space_name, venue.name AS venue_name, "
-				+ "space.daily_rate AS daily_rate, number_of_attendees, start_date, end_date, "
-				+ "reserved_for FROM reservation JOIN space on reservation.space_id = space.id JOIN "
-				+ "venue on space.venue_id = venue.id WHERE venue_id = ? AND start_date BETWEEN "
-				+ "CURRENT_DATE AND (CURRENT_DATE + 30) ORDER BY start_date";
-		SqlRowSet reservationResults = jdbcTemplate.queryForRowSet(sql, venueId);
-
-		while (reservationResults.next()) {
-			reservation.add(mapRowToReservation(reservationResults));
+		Reservation reservation = null;
+		if (rows.next()) {
+			reservation = mapRowToReservation(rows);
 		}
 
 		return reservation;
 	}
 
-	private Reservation mapRowToReservation(SqlRowSet result) {
+	private Reservation mapRowToReservation(SqlRowSet row) {
 		Reservation reservation = new Reservation();
 
-		LocalDate startingDate = result.getDate("start_date").toLocalDate();
-		LocalDate endingDate = result.getDate("end_date").toLocalDate();
-		double totalCost = result.getDouble("daily_rate") * (ChronoUnit.DAYS.between(startingDate, endingDate));
-
-		reservation.setId(result.getInt("reservation_id"));
-		reservation.setVenue(result.getString("venue_name"));
-		reservation.setSpace(result.getString("space_name"));
-		reservation.setTotalCost(totalCost);
-		reservation.setStartingDate(startingDate);
-		reservation.setEndingDate(endingDate);
-		reservation.setNumberOfAttendees(result.getInt("number_of_attendees"));
-		reservation.setReservedFor(result.getString("reserved_for"));
-
+		reservation.setReservationId(row.getInt("reservation_id"));
+		reservation.setSpaceID(row.getInt("space_id"));
+		reservation.setNumberOfAttendees(row.getInt("number_of_attendees"));
+		if (row.getDate("start_date") != null) {
+			reservation.setStartingDate(row.getDate("starting_date").toLocalDate());
+		}
+		if (row.getDate("end_date") != null) {
+			reservation.setEndingDate(row.getDate("ending_date").toLocalDate());
+		}
+		reservation.setReservedFor(row.getString("reserved_for"));
+		reservation.setVenueName(row.getString("venue_name"));
+		reservation.setSpaceName(row.getString("space_name"));
+		reservation.setDailyRate(row.getDouble("daily_rate"));
 		return reservation;
 	}
+
 	
 }

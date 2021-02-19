@@ -2,23 +2,27 @@ package com.techelevator.model;
 
 public class Space {
 	
-	
 	private int id;
+	private long venueID;
 	private String name;
 	private boolean isAccessible;
 	private int openFrom;
 	private int openTo;
 	private double dailyRate;
 	private int maxOccupancy;
-	
-	
-	
+	private String venueName;
 	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public long getVenueID() {
+		return venueID;
+	}
+	public void setVenueID(long venueID) {
+		this.venueID = venueID;
 	}
 	public String getName() {
 		return name;
@@ -56,6 +60,14 @@ public class Space {
 	public void setMaxOccupancy(int maxOccupancy) {
 		this.maxOccupancy = maxOccupancy;
 	}
+	public String getVenueName() {
+		return venueName;
+	}
+	public void setVenueName(String venueName) {
+		this.venueName = venueName;
+	}
+	
+	
 	
 
 }

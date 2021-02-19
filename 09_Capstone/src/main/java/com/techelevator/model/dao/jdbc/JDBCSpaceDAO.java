@@ -24,13 +24,11 @@ public class JDBCSpaceDAO implements SpaceDAO {
 		
 		List<Space> spaces = new ArrayList<Space>();
 		
-		String sql = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy, venue.name AS venue_name "
-						+ "FROM space "
-						+ "JOIN venue ON space.venue_id = venue.id "
-						+ "JOIN category_venue ON venue.id = category_venue.venue_id"
-						+ "WHERE (venue.id = ?)"
-						+ "ORDER BY space_name";
-		
+		String sql = "SELECT space.id AS space_id, space.venue_id AS venue_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to,"
+				+ "CAST (space.daily_rate AS numeric) AS daily_rate, space.max_occupancy AS max_occupancy, venue.name AS venue_name"
+				+ "FROM space"
+				+ "JOIN venue ON space.venue_id = venue.id"
+				+ "WHERE venue.id = ?";
 		
 		SqlRowSet spaceResults = jdbcTemplate.queryForRowSet(sql, venueID);
 		
@@ -45,9 +43,10 @@ public class JDBCSpaceDAO implements SpaceDAO {
 	}
 
 	@Override
-	public List<Space> retrieveAvailableSpaces(int venueID, LocalDate startingDate, LocalDate endingDate, int expectedAttendance,
-			boolean isAccessible, double dailyRate, int category) {
+	public List<Space> retrieveAvailableSpaces(LocalDate startingDate, int numberOfDays, int expectedAttendance,
+			int venueID) {
 	
+	LocalDate endingDate = startingDate.plusDays(numberOfDays);
 	List<Space> spaceRequest = new ArrayList<Space>();
 		
 	String sqlRetrieveAvailableSpaces = "SELECT space.id, space.venue_id, space.name, space.is_accessible, space.open_from, space.open_to, CAST(space.daily_rate AS decimal), space.max_occupancy FROM space " +
@@ -76,33 +75,6 @@ public class JDBCSpaceDAO implements SpaceDAO {
 	}
 
 	
-
-	@Override
-	public List<Space> retrieveSpacesForVenue(int venueID, LocalDate startingDate, LocalDate endingDate,
-			int expectedAttendance) {
-		
-		
-List<Space> spaces = new ArrayList<Space>();
-		
-		String sql = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy, venue.name AS venue_name "
-						+ "FROM reservation"
-						+ "JOIN space ON reservation.reservation_id = space.id "
-						+ "JOIN venue ON space.id = venue.id"
-						+ "WHERE (venue_id = ?, start_date = ?, end_ date = ?)"
-						+ "ORDER BY space_name";
-		
-		
-		SqlRowSet spaceResults = jdbcTemplate.queryForRowSet(sql, venueID, startingDate, endingDate, expectedAttendance);
-		
-		//loop through the results
-		while(spaceResults.next()) {
-			Space space = mapRowToSpace(spaceResults);
-			spaces.add(space);
-		}
-		
-		return spaces;
-		
- }
 	
 	//space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy,	
 	private Space mapRowToSpace(SqlRowSet spaceResults) {
