@@ -27,12 +27,12 @@ public class JDBCSpaceDAO implements SpaceDAO {
 		String sql = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy, venue.name AS venue_name "
 						+ "FROM space "
 						+ "JOIN venue ON space.venue_id = venue.id "
-						+ "FULL JOIN categorey_venue ON venue.id = category_venue.venue_id"
-						+ "WHERE (is_accessible = true OR is_accessible = ?)"
+						+ "JOIN categorey_venue ON venue.id = category_venue.venue_id"
+						+ "WHERE (venue_id = ?)"
 						+ "ORDER BY space_name";
 		
 		
-		SqlRowSet spaceResults = jdbcTemplate.queryForRowSet(sql);
+		SqlRowSet spaceResults = jdbcTemplate.queryForRowSet(sql, venueID);
 		
 		//loop through the results
 		while(spaceResults.next()) {
@@ -46,17 +46,20 @@ public class JDBCSpaceDAO implements SpaceDAO {
 
 	@Override
 	public List<Space> retrieveAvailableSpaces(LocalDate startingDate, LocalDate endingDate, int expectedAttendance,
-			boolean wheelchairAccess, double dailyRate, int category) {
+			boolean isAccessible, double dailyRate, int category) {
 	
 	List<Space> spaces = new ArrayList<Space>();
 		
 		String sql = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy, "
-						+ "FROM space "
-						+ "JOIN venue ON space.venue_id = venue.id "
+						+ "FROM reservationn "
+						+ "JOIN space ON reservation.reservation_id = space.id "
+						+ "JOIN venue ON space.id = venue.id"
+						+ "JOIN category_venue ON venu.id = category_venue.venue_id"
+						+ "WHERE start_date =? , end_date = ?, is_accessible = ?, daily_rate = ?, category_id = ? "
 						+ "ORDER BY space_name";
 		
 		
-		SqlRowSet spaceResults = jdbcTemplate.queryForRowSet(sql);
+		SqlRowSet spaceResults = jdbcTemplate.queryForRowSet(sql, startingDate, endingDate, expectedAttendance, isAccessible, category);
 		
 		//loop through the results
 		while(spaceResults.next()) {
@@ -73,9 +76,29 @@ public class JDBCSpaceDAO implements SpaceDAO {
 	@Override
 	public List<Space> retrieveSpacesForVenue(int venueID, LocalDate startingDate, LocalDate endingDate,
 			int expectedAttendance) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		
+		
+List<Space> spaces = new ArrayList<Space>();
+		
+		String sql = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy, venue.name AS venue_name "
+						+ "FROM reservation"
+						+ "JOIN space ON reservation.id = soace.id "
+						+ "JOIN venue ON space.id = venue.id"
+						+ "WHERE (venue_id = ?, start_date = ?, end_ date = ?)"
+						+ "ORDER BY space_name";
+		
+		
+		SqlRowSet spaceResults = jdbcTemplate.queryForRowSet(sql, venueID, startingDate, endingDate, expectedAttendance);
+		
+		//loop through the results
+		while(spaceResults.next()) {
+			Space space = mapRowToSpace(spaceResults);
+			spaces.add(space);
+		}
+		
+		return spaces;
+		
+ }
 	
 	//space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, space.daily_rate AS daily_rate , space.max_occupancy AS max_occupancy,	
 	private Space mapRowToSpace(SqlRowSet spaceResults) {
