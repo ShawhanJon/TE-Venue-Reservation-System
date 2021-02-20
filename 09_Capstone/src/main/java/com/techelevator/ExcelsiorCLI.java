@@ -17,6 +17,7 @@ public class ExcelsiorCLI {
 	private static final String List_Venues = "1";
 	private static final String Quit = "Q";
 	
+
 	private Menu menu;
 	private ReservationDAO reservationDAO;
 	private SpaceDAO spaceDAO;
@@ -54,6 +55,11 @@ public class ExcelsiorCLI {
 			
 			if (choice.equals(List_Venues)) {
 				
+				List<Venue> venueList = venueDAO.getAllVenues();
+				menu.printAllVenues(venueList);
+			
+					handleSubMenu();
+				
 			}
 			else if (choice.toUpperCase().contentEquals(Quit)) {
 				break;
@@ -64,5 +70,31 @@ public class ExcelsiorCLI {
 		}
 		
 
+	}
+	
+	
+	private void handleSubMenu() {
+		
+		 boolean isRunning = true;
+		 while (isRunning) {
+			 
+			 String subMenuChoice = menu.venuesMenu();
+			 
+			 if(subMenuChoice.equals(List_Venues)) {
+				 
+				 String venueChoice = menu.getVenueIdFromUser();
+				/* venueChoice = Integer.parseInt(subMenuChoice); */ 
+				/* Venue venue = venueDAO.selectVenueById(venueChoice); */
+				/*
+				 * menu.printVenue(venue);
+				 */
+			 }
+			 
+			 
+			/*
+			 * List<Venue> venues = venueDAO.getAllVenues(); menu.printAllVenues(venues);
+			 */
+		 }
+		
 	}
 }

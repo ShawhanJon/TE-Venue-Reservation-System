@@ -71,6 +71,26 @@ public class Menu {
 		}
 	}
 	
+	public String getVenueIdFromUser() {
+
+		System.out.println("\nPlease enter number choice");
+		return scanner.nextLine();
+
+	}
+	
+	
+	public void printVenue(Venue venue) {
+		
+		
+		System.out.println(venue.getName());
+		System.out.println(venue.getCity_name() + ", " + venue.getState_abbreviation());
+		System.out.println(venue.getCategory_name());
+		System.out.println(venue.getDescription());
+		
+		
+		
+		
+	}
 	
 
 //	/**
