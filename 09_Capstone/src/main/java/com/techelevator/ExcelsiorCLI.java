@@ -1,10 +1,27 @@
 package com.techelevator;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import com.techelevator.*;
+import com.techelevator.model.dao.*;
+import com.techelevator.model.dao.jdbc.*;
+import com.techelevator.model.*;
+import com.techelevator.view.*;
+
 public class ExcelsiorCLI {
+	
+	private static final String List_Venues = "1";
+	private static final String Quit = "Q";
+	
+	private Menu menu;
+	private ReservationDAO reservationDAO;
+	private SpaceDAO spaceDAO;
+	private VenueDAO venueDAO;
+	
 
 	public static void main(String[] args) {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -18,11 +35,33 @@ public class ExcelsiorCLI {
 
 	public ExcelsiorCLI(DataSource datasource) {
 		
+		this.menu = new Menu();
+		
+//		**MIGHT BREAK **
+		
+		reservationDAO = new JDBCReservationDAO(datasource);
+		spaceDAO = new JDBCSpaceDAO(datasource);
+		venueDAO = new JDBCVenueDAO(datasource);
+		
 	}
 
 	public void run() {
 		
-		// Reminder: No System.out.printlns in this class
+		boolean running = true;
+		
+		while (running) {
+			String choice = menu.printMainMenu();
+			
+			if (choice.equals(List_Venues)) {
+				
+			}
+			else if (choice.toUpperCase().contentEquals(Quit)) {
+				break;
+			}
+			else {
+				menu.printMessage("Invalid Input. Try Again!");
+			}
+		}
 		
 
 	}
