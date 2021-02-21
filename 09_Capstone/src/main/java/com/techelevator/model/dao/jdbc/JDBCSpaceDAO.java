@@ -20,7 +20,7 @@ public class JDBCSpaceDAO implements SpaceDAO {
 	
 
 	@Override
-	public List<Space> retrieveSpacesByVenueID(int venueID) {
+	public List<Space> retrieveSpacesByVenueID(long venueID) {
 		
 		List<Space> spaces = new ArrayList<Space>();
 		
@@ -44,7 +44,7 @@ public class JDBCSpaceDAO implements SpaceDAO {
 
 	@Override
 	public List<Space> retrieveAvailableSpaces(LocalDate startingDate, int numberOfDays, int expectedAttendance,
-			int venueID) {
+			long venueID) {
 	
 	LocalDate endingDate = startingDate.plusDays(numberOfDays);
 	List<Space> spaceRequest = new ArrayList<Space>();

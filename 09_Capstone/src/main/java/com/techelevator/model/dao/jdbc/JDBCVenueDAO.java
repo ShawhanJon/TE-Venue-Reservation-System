@@ -41,7 +41,7 @@ public class JDBCVenueDAO implements VenueDAO {
 	}
 
 	@Override
-	public Venue selectVenueById(int id) {
+	public Venue selectVenueById(long id) {
 		String selectSql = "SELECT venue.id AS venue_id, venue.name AS venue_name, venue.city_id AS city_id, venue.description AS venue_description, city.name AS city_name, city.state_abbreviation AS state_abbreviation, STRING_AGG(category.name, ',' ) AS category_name FROM venue"
 				+ " JOIN city ON venue.city_id = city.id"
 				+ " LEFT JOIN category_venue ON venue.id = category_venue.venue_id"

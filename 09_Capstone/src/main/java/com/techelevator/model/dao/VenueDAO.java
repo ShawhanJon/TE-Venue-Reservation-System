@@ -8,6 +8,6 @@ public interface VenueDAO {
 	
 	public List<Venue> getAllVenues();
 
-	public Venue selectVenueById(int id);
+	public Venue selectVenueById(long userSelectedVenue);
 
 }
