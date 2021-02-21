@@ -9,14 +9,13 @@ import com.techelevator.view.*;
 
 public class Menu {
 
-
-/**
- * The Menu class is responsible for printing a simple menu for our application
- * and capturing user input. This acts as the User Interface for our app.
- * 
- * @author Java Green Team 6 is the best!
- *
- */
+	/**
+	 * The Menu class is responsible for printing a simple menu for our application
+	 * and capturing user input. This acts as the User Interface for our app.
+	 * 
+	 * @author Java Green Team 6 is the best!
+	 *
+	 */
 
 	private Scanner scanner;
 
@@ -33,65 +32,87 @@ public class Menu {
 	public String printMainMenu() {
 
 		System.out.println("***************************");
-		System.out.println("Excelsior Venues");
+		System.out.println("Excelsior Venues App");
 		System.out.println("***************************\n");
 
 		System.out.println("What would you like to do?\n");
-		
-		System.out.println("1. List Venues");
-		System.out.println("Q. Quit\n");
+
+		System.out.println("1) List Venues");
+		System.out.println("Q) Quit\n");
 
 		return scanner.nextLine();
 
 	}
-	
+
 	/**
 	 * This method prints out the Venue Menu (Option 1 from main menu)
+	 * 
 	 * @return user choice
 	 */
 	public String venuesMenu() {
 
-		System.out.println("Which venue would you like to view?\n");
-
-		
-		
-
-		System.out.println("Please select your choice (number only)");
+		System.out.println("\nWhich venue would you like to view?\n");
+		System.out.println("Please select your choice:");
+		System.out.println("R) Return to Previous Screen");
 
 		return scanner.nextLine();
 
 	}
-	
-	public void printAllVenues (List<Venue> venues) {
+
+	public String venueDetailsMenu() {
+
+		System.out.println("What would you like to do next?\n");
+		System.out.println("1) View Spaces");
+		System.out.println("2) Search for a Reservation");
+		System.out.println("R) Return to Previous Screen");
+
+		return scanner.nextLine();
+	}
+
+	public String venueSpacesMenu() {
+
+		System.out.println("What would you like to do next?");
+		System.out.println("1) Reserve a Space");
+		System.out.println("R) Return to Previous Screen");
+
+		return scanner.nextLine();
+
+	}
+
+	public String reserveASpaceMenu() {
+
+		System.out.println("When do you need the space(mm/dd/yyyy)?");
+		return scanner.nextLine();
+		/*
+		 * //need to figure how to scan in user input for 'How many days will you need
+		 * the space?' and 'How many people will be in attendance?
+		 */
+	}
+
+	public void printAllVenues(List<Venue> venues) {
 		System.out.println();
 		if (venues.size() > 0) {
 			for (Venue venue : venues) {
-				System.out.println(venue.getId() + ") "+ venue.getName());
+				System.out.println(venue.getId() + ") " + venue.getName());
 			}
 		}
 	}
-	
+
 	public String getVenueIdFromUser() {
 
-		System.out.println("\nPlease enter number choice");
+		System.out.println("\nPlease enter venue id number:");
 		return scanner.nextLine();
 
 	}
-	
-	
+
 	public void printVenue(Venue venue) {
-		
-		
+
 		System.out.println(venue.getName());
 		System.out.println(venue.getCity_name() + ", " + venue.getState_abbreviation());
 		System.out.println(venue.getCategory_name());
 		System.out.println(venue.getDescription());
-		
-		
-		
-		
+
 	}
-	
 
 //	/**
 //	 * This method prompts the user to enter a valid MLS Numbe and returns the
