@@ -172,8 +172,7 @@ public class ExcelsiorCLI {
 
 	private void availableSpaces() {
 		while (true) {
-			List<Space> spaces = spaceDAO.retrieveAvailableSpaces(startDate, numberOfDaysToReserve, numberOfAttendees,
-					userSelectedVenue);
+			List<Space> spaces = spaceDAO.retrieveAvailableSpaces(startDate, numberOfDaysToReserve, numberOfAttendees, userSelectedVenue);
 			String choice = menu.numberOfSpacesBeingReserved(spaces, numberOfDaysToReserve);
 			try {
 				spaceToReserve = Integer.parseInt(choice);

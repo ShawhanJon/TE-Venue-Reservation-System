@@ -25,10 +25,10 @@ public class JDBCSpaceDAO implements SpaceDAO {
 		List<Space> spaces = new ArrayList<Space>();
 		
 		String sql = "SELECT space.id AS space_id, space.venue_id AS venue_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to,"
-				+ "CAST (space.daily_rate AS numeric) AS daily_rate, space.max_occupancy AS max_occupancy, venue.name AS venue_name"
-				+ "FROM space"
-				+ "JOIN venue ON space.venue_id = venue.id"
-				+ "WHERE venue.id = ?";
+				+ " CAST (space.daily_rate AS numeric) AS daily_rate, space.max_occupancy AS max_occupancy, venue.name AS venue_name"
+				+ " FROM space"
+				+ " JOIN venue ON space.venue_id = venue.id"
+				+ " WHERE venue.id = ?";
 		
 		SqlRowSet spaceResults = jdbcTemplate.queryForRowSet(sql, venueID);
 		
@@ -49,7 +49,7 @@ public class JDBCSpaceDAO implements SpaceDAO {
 	LocalDate endingDate = startingDate.plusDays(numberOfDays);
 	List<Space> spaceRequest = new ArrayList<Space>();
 		
-	String sqlRetrieveAvailableSpaces = "SELECT space.id, space.venue_id, space.name, space.is_accessible, space.open_from, space.open_to, CAST(space.daily_rate AS decimal), space.max_occupancy FROM space " +
+	String sqlRetrieveAvailableSpaces = "SELECT space.id AS space_id, space.name AS space_name, space.is_accessible AS is_accessible, space.open_from AS open_from, space.open_to AS open_to, CAST(space.daily_rate AS decimal), space.max_occupancy FROM space " +
             "JOIN venue ON venue.id = space.venue_id " +
             "WHERE venue_id = ? " +
             "AND max_occupancy >= ? " +
@@ -60,7 +60,7 @@ public class JDBCSpaceDAO implements SpaceDAO {
             "AND ((EXTRACT(MONTH from CAST(? AS DATE)) BETWEEN space.open_from AND space.open_to) OR space.open_from IS NULL AND space.open_to IS NULL) " +
             "AND ((EXTRACT(MONTH from CAST(? AS DATE)) BETWEEN space.open_from AND space.open_to) OR space.open_from IS NULL AND space.open_to IS NULL) " +
             "GROUP BY space.id " +
-            "ORDER BY space.daily_rate ASC " +
+            "ORDER BY space.daily_rate " +
             "LIMIT 5";
     SqlRowSet spaceResults = jdbcTemplate.queryForRowSet(sqlRetrieveAvailableSpaces, venueID, expectedAttendance, startingDate, endingDate, startingDate, endingDate);
 	

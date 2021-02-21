@@ -3,7 +3,7 @@ package com.techelevator.model;
 
 public class Venue {
 	
-	private int id;
+	private long id;
 	private String name;
 	private int city_id;
 	private String city_name;
@@ -12,10 +12,10 @@ public class Venue {
 	private String category_name;
 	
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {

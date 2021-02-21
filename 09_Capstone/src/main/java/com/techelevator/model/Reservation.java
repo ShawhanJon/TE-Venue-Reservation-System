@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class Reservation {
 	
-	private int reservationId;
-	private int spaceID;
-	private int numberOfAttendees;
+	private long reservationId;
+	private long spaceID;
+	private long numberOfAttendees;
 	private LocalDate startingDate;
 	private LocalDate endingDate;
 	private String reservedFor;
@@ -14,22 +14,22 @@ public class Reservation {
 	private String spaceName;
 	private double dailyRate;
 	
-	public int getReservationId() {
+	public long getReservationId() {
 		return reservationId;
 	}
-	public void setReservationId(int reservationId) {
+	public void setReservationId(long reservationId) {
 		this.reservationId = reservationId;
 	}
-	public int getSpaceID() {
+	public long getSpaceID() {
 		return spaceID;
 	}
-	public void setSpaceID(int spaceID) {
+	public void setSpaceID(long spaceID) {
 		this.spaceID = spaceID;
 	}
-	public int getNumberOfAttendees() {
+	public long getNumberOfAttendees() {
 		return numberOfAttendees;
 	}
-	public void setNumberOfAttendees(int numberOfAttendees) {
+	public void setNumberOfAttendees(long numberOfAttendees) {
 		this.numberOfAttendees = numberOfAttendees;
 	}
 	public LocalDate getStartingDate() {

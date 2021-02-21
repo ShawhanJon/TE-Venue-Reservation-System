@@ -7,6 +7,6 @@ public interface ReservationDAO {
 	
 	public Reservation addReservation(Reservation reservation);
 
-	public Reservation getReservationById(int id);
+	public Reservation getReservationById(long id);
 
 }

@@ -2,7 +2,7 @@ package com.techelevator.model;
 
 public class Space {
 	
-	private int id;
+	private long id;
 	private long venueID;
 	private String name;
 	private boolean isAccessible;
@@ -12,10 +12,10 @@ public class Space {
 	private int maxOccupancy;
 	private String venueName;
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public long getVenueID() {
